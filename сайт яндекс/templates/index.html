@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<link rel="stylesheet" type="text/css" href="{{style}}" />
+<head>
+    <meta charset="UTF-8">
+        <title>Maper.io</title>
+</head>
+<body>
+        <h1 align=center>Maper.io</h1>
+        <hr>
+        <br><br><br><br>
+        <center>
+        <form method="POST" class="login_form">
+        <fieldset>
+            <legend class=info>Вход/Регистрация</legend>
+            <text class=info>{{text_in_login}}</text>
+            <p class=info>Ваш логин:
+            <br>
+            <input class=info type="text" name="user" maxlength="15" value="Nickname">
+            </p>
+            <p class=info>Пароль:
+            <br>
+            <input class=info type="password" name="hashed_password" size="15" maxlength="30">
+            </p>
+            <input type="submit" class=info value="Вход/Регистрация">
+        </fieldset>
+        </form>
+        <a class=big_button href="/game">START!</a>
+        </center>
+</body>
+</html>
