@@ -1,4 +1,4 @@
-/*window.onload = function () {
+window.onload = function () {
 	var width = window.innerWidth;
 	var	height = window.innerHeight;
 	var canvas = document.getElementById('canvas');
@@ -24,20 +24,7 @@
 	light.target.position.set(-5, 0, 0);
 	scene.add(light);
 	scene.add(light.target);
-	camera.position.set(100, 0, 100);
-
-	var tree;
-	var parser = new vox.Parser();
-	parser.parse("../img/untitled.vox").then(function(voxelData) {
-	  voxelData.voxels; 
-	  voxelData.size;
-	  voxelData.palette;
-
-	  var builder = new vox.MeshBuilder(voxelData, param);
-	  tree = builder.createMesh();
-	  tree.geometry.center();
-	  scene.add(tree);
-	});
+	camera.position.set(0, 500, 1000);
 
 	var geometry_plane = new THREE.PlaneGeometry(10000,10000);
 	var material_plane = new THREE.MeshPhongMaterial( {color: 0x88D9FF,wireframe: false});
@@ -71,8 +58,9 @@
 	    }
 	    loop();
 	});
+	camera.position.set(player.position.x + 0, player.position.y + 100, player.position.z + 500);
 	function loop() {
-		
+		updatePlayer()
 		var width = window.innerWidth;
 		var	height = window.innerHeight;
 		canvas.setAttribute('width', width);
@@ -94,58 +82,4 @@
 	    }
 	}
 	loop();
-}*/
-
-
-	var width = window.innerWidth;
-	var	height = window.innerHeight;
-	var canvas = document.getElementById('canvas');
-	var controls;
-
-	canvas.setAttribute('width', width);
-	canvas.setAttribute('height', height);
-
-	var renderer = new THREE.WebGLRenderer({canvas: canvas});
-	renderer.setClearColor(0x000000);
-	renderer.shadowMapenabled = true;
-
-	var scene = new THREE.Scene();
-
-	var camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 5000);
-
-	controls = new THREE.OrbitControls (camera, renderer.domElement);
-
-	const color = 0xFFFFFF;
-	const intensity = 1;
-	const light = new THREE.DirectionalLight(color, intensity);
-	light.position.set(0, 10, 0);
-	light.target.position.set(-5, 0, 0);
-	scene.add(light);
-	scene.add(light.target);
-	camera.position.set(100, 0, 100);
-
-	var tree;
-	var parser = new vox.Parser();
-	parser.parse("../img/untitled.vox").then(function(voxelData) {
-	  voxelData.voxels; 
-	  voxelData.size;
-	  voxelData.palette;
-
-	  var builder = new vox.MeshBuilder(voxelData, param);
-	  tree = builder.createMesh();
-	  tree.geometry.center();
-	  scene.add(tree);
-	});
-
-	light.castShadow = true;
-
-	function loop() {
-		var width = window.innerWidth;
-		var	height = window.innerHeight;
-		canvas.setAttribute('width', width);
-		canvas.setAttribute('height', height);
-		
-		renderer.render(scene, camera);
-		requestAnimationFrame(function(){loop();});
-	}
-loop();
+}
