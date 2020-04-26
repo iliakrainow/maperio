@@ -45,18 +45,9 @@ def geo():
 
 
 
-@app.route('/store', methods=['GET', 'POST'])
+@app.route('/store')
 def store():
-    if request.method == 'GET':
-        return render_template('store.html', style=url_for('static', filename='css/main.css'))
-    elif request.method == 'POST':
-        print(request.form["count"])
-        sign = ['user', 'RUB', 'донат', str(request.form["count"]), '546db56179690bff7ecc07e9b75d0f54']
-        sign = hashlib.sha256(bytes('{up}'.join(sign), 'utf-8')).hexdigest()
-        payload = {'sum': request.form["count"], 'desc': 'донат', 'account': 'user', 'currency': 'RUB', 'signature': sign}
-        r = requests.get('https://unitpay.ru/pay/258091-9c3d7', params=payload)
-        return f'''{r.url}
-        <META HTTP-EQUIV="REFRESH" CONTENT="1; URL={r.url}>'''
+    return render_template('store.html', style=url_for('static', filename='css/main.css'))
 
 
 if __name__ == '__main__':
