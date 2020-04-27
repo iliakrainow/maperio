@@ -47,15 +47,12 @@ def geof():
     k = 0
     for user in session.query(users.User).all():
         k += 1
-        if k == 32:
-            break
         if user.score in sb:
             sb[user.score] = sb[user.score] + ', ' + user.name
-            print(sb[user.score])
         else:
             sb[user.score] = user.name
     return render_template('score.html', style=url_for('static', filename='css/score.css'), sb=sb,
-                           sb2=sorted(sb, reverse=True))
+                           sb2=sorted(sb, reverse=True)[:32])
 
 
 @app.route('/api/geolocation')
