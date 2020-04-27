@@ -10,6 +10,11 @@
     font-size: 65pt;
     color: white;
    }
+   .nick {
+    font-family: TrueType, 'HarpoonC';
+        font-size: 40pt;
+    color: white;
+   }
    .big_button {
     font-family: TrueType, 'HarpoonC';
     font-size: 40pt;

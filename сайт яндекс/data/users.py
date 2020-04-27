@@ -9,3 +9,4 @@ class User(SqlAlchemyBase):
                            primary_key=True, autoincrement=True)
     name = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     hashed_password = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    score = sqlalchemy.Column(sqlalchemy.String, nullable=True, default=0)

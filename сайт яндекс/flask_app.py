@@ -1,18 +1,18 @@
 from flask import Flask, render_template, request, url_for
 from data import db_session, add_user_api, users
+import sqlalchemy
 import json
 import hashlib
 
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
-
 
 
 def main():
     db_session.global_init("db/data.sqlite")
     app.register_blueprint(add_user_api.blueprint)
     app.run()
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -33,22 +33,40 @@ def index():
             nick = request.form["user"]
             d = dict(json.loads(add_user_api.get_users(nick)))
             if hashlib.md5(bytes(request.form["hashed_password"], 'utf-8')).hexdigest() == str(d[str(nick)]):
-                return render_template('index.html', style=url_for('static', filename='css/main.css'), text_in_login="Успешно!")
+                return render_template('index.html', style=url_for('static', filename='css/main.css'),
+                                       text_in_login="Успешно!")
             else:
-                return str(hash(request.form["hashed_password"])) + ' ' + str(d[str(nick)])
-                return render_template('index.html', style=url_for('static', filename='css/main.css'), text_in_login="Логин занят, пароль неверный")
+                return render_template('index.html', style=url_for('static', filename='css/main.css'),
+                                       text_in_login="Логин занят, пароль неверный")
+
+
+@app.route('/score')
+def geof():
+    session = db_session.create_session()
+    sb = dict()
+    k = 0
+    for user in session.query(users.User).all():
+        k += 1
+        if k == 32:
+            break
+        if user.score in sb:
+            sb[user.score] = sb[user.score] + ', ' + user.name
+            print(sb[user.score])
+        else:
+            sb[user.score] = user.name
+    return render_template('score.html', style=url_for('static', filename='css/score.css'), sb=sb,
+                           sb2=sorted(sb, reverse=True))
+
 
 @app.route('/api/geolocation')
 def geo():
     return render_template('get_geo.html')
 
+
 print(__name__)
 if __name__ == '__main__':
     main()
 
-
 '''type="submit"
  action="/api/add_user" method="POST"
 '''
-
-
