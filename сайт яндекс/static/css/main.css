@@ -10,19 +10,20 @@
     font-size: 65pt;
     color: white;
    }
-   .nick {
-    font-family: TrueType, 'HarpoonC';
-        font-size: 40pt;
-    color: white;
-   }
    .big_button {
     font-family: TrueType, 'HarpoonC';
     font-size: 40pt;
     color: white;
    }
    .info{
-    font-family: TrueType, 'HarpoonC';
+    font-family: 'Comfortaa', cursive;
     font-size: 30pt;
+    color: white;
+    background-color: #33231b;
+   }
+   .small_info{
+    font-family: 'Comfortaa', cursive;
+    font-size: 15pt;
     color: white;
     background-color: #33231b;
    }
