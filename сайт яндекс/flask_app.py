@@ -148,14 +148,14 @@ def give():
             }
             requests.get("https://api.vk.com/method/messages.send", params=params).text
         return render_template(
-            "vk_code.html", style=url_for("static", filename="css/score.css")
+            "vk_code.html", style=url_for("static", filename="css/main.css")
         )
     elif request.method == "POST":
         if "money" not in list(request.form):
             if str(request.form["code"]) in may:
                 may = []
                 return render_template(
-                    "give.html", style=url_for("static", filename="css/score.css")
+                    "give.html", style=url_for("static", filename="css/main.css")
                 )
             may = []
             return "Неправильный код."
