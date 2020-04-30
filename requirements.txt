@@ -10,7 +10,6 @@ attrs==19.3.0
 audioread==2.1.8
 auto-py-to-exe==2.6.5
 autopep8==1.4.4
-b0mb3r==2.0.0
 beautifulsoup4==4.8.1
 black==19.10b0
 bottle==0.12.17
