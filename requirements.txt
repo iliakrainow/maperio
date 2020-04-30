@@ -87,7 +87,6 @@ pyfiglet==0.8.post1
 pygame==1.9.6
 PyGetWindow==0.0.8
 pyglet==1.5.2
-pylab==0.0.2
 pylint==2.4.4
 pymorphy2==0.8
 pymorphy2-dicts==2.4.393442.3710985
