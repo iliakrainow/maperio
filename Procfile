@@ -1,1 +1,1 @@
-web: python сайт яндекс/flask_app.py
+web: python сайт_яндекс/flask_app.py
