@@ -172,6 +172,6 @@ def give():
             return "ok"
 
 
-if __name__ == "__main__":
+if __name__ == "__main__ !":
     may = []
     main()
