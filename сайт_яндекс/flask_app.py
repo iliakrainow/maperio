@@ -12,8 +12,8 @@ app.config["SECRET_KEY"] = "yandexlyceum_secret_key"
 
 
 def main():
-    db_session.global_init("db/data.sqlite")
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////db/data.sqlite'
+    db_session.global_init("db/data.sqlite")
     app.register_blueprint(add_user_api.blueprint)
     app.run()
 
