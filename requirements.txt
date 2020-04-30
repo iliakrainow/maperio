@@ -74,7 +74,6 @@ pep8==1.7.1
 pexpect==4.7.0
 pick==0.6.4
 Pillow==6.1.0
-playsound==1.2.2
 pluginmanager==0.4.1
 ptyprocess==0.6.0
 py2exe==0.9.2.2
