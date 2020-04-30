@@ -1,1 +1,1 @@
-web: python gunicorn сайт_яндекс/flask_app.py
+web: python сайт_яндекс/flask_app.py
