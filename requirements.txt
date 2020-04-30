@@ -96,7 +96,6 @@ pyperclip==1.7.0
 pyppeteer==0.0.25
 PyQt5==5.13.1
 PyQt5-sip==12.7.0
-pyqt5-tools==5.13.0.1.5
 pyquery==1.4.1
 PyRect==0.1.4
 pyscreenshot==0.5.1
