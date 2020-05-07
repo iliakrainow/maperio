@@ -15,5 +15,9 @@ def send_text(message):
     elif message.text == 'Пока':
         bot.send_message(message.chat.id, 'Прощай, создатель')
 
+@bot.message_handler(content_types=['sticker'])
+def send_text(message):
+    print(message)
+
 
 bot.polling(none_stop=True, timeout=123)
