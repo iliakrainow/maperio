@@ -7,4 +7,6 @@ class Session(SqlAlchemyBase):
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
+    name = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     hashed = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    time_from = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
