@@ -180,7 +180,6 @@ def game():
             first_script=url_for("static", filename="/js/lib/vox.min.js"),
             second_script=url_for("static", filename="/js/lib/three.min.js"),
             third_script=url_for("static", filename="/js/lib/OrbitControls.js"),
-            fourth_script=url_for("static", filename="/js/scripts.js"),
         )
     else:
         return 'Сначала нужно войти или зарегестрироваться.'
