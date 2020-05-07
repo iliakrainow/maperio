@@ -52,6 +52,7 @@ window.onload = function () {
 			scene.add(window['target'+i]);
 		}
 	}
+	#принимает имя
 	document.querySelector("#start").addEventListener("click", Handler);
 	function Handler(event) {
 	    fetch('/api')
@@ -176,6 +177,7 @@ window.onload = function () {
 	}
 	function end(){
 		renderer.clear();
+		#отправляет результаты
 		var dd = {'speed': k,
 		'score':score};
 		$.ajax({
