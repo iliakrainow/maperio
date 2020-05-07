@@ -14,11 +14,13 @@
 <body>
 	<canvas id="canvas"></canvas>
     <script>
+var user_inf
 window.onload = function () {
 	function randomInteger(min, max) {
   		let rand = min + Math.random() * (max + 1 - min);
   		return Math.floor(rand);
 	}
+	
 	var width = window.innerWidth;
 	var	height = window.innerHeight;
 	var canvas = document.getElementById('canvas');
@@ -58,6 +60,7 @@ window.onload = function () {
 
 	var geometry_target = new THREE.CubeGeometry(5,5,5);
 	var material_target = new THREE.MeshPhongMaterial( {color: 0xFF0000,wireframe: false});
+
 
 	function generate_targets(geometry_target, material_target){
 		for (var i = 1; i<5; i++) {
@@ -117,6 +120,18 @@ window.onload = function () {
 	        flag = 4;
 	    }	
 	});
+
+	$(document).ready(function() {
+        console.log('f');
+	    fetch('/user_data')
+	        .then((response) => {
+	            return response.json();
+	        })
+	        .then((myjson) => {
+                user_inf = myjson;
+	            console.log(myjson);
+	        });
+	})
 	function loop() {
 		updatePlayer()
 		if (Math.abs(player.position.x) > 480 || player.position.z > 500 || player.position.z < -515) {
@@ -184,34 +199,14 @@ window.onload = function () {
 	function end(){
 		renderer.clear();
 		//отправляет результаты
-		var dd = {'speed': k,
-		'score':score};
-		$.ajax({
-		    type: "POST",
-		    url: "{{ url_for('score') }}",
-		    contentType: "application/json",
-		    data: JSON.stringify(dd),
-		    dataType: "json",
-		    success: function(response) {
-		        window.location.replace("/");
-		    },
-		    error: function(err) {
-		        window.location.replace("/");
-		    }
-		});
+		var dd = {'score': score};
+        $.extend(true, dd, user_inf);
+		$.post("score", dd );
+        window.location.replace("/");
 
-    	//принимает имя
-	document.querySelector("#start").addEventListener("click", Handler);
-	function Handler(event) {
-	    fetch('/user_data')
-	        .then((response) => {
-	            return response.json();
-	        })
-	        .then((myjson) => {
-	            console.log(myjson);
-	        });
+
 	}
-	}
+
 	loop();
 }
 </script>

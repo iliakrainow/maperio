@@ -55,9 +55,6 @@ def index():
                     text_in_login="Успешно!",
                 )
             else:
-                return (
-                    str(hash(request.form["hashed_password"])) + " " + str(d[str(nick)])
-                )
                 return render_template(
                     "index.html",
                     style=url_for("static", filename="css/main.css"),
@@ -89,16 +86,23 @@ def score():
             sb2=sorted(sb, reverse=True)[:32],
         )
     elif request.method == "POST":
+        print(list(request.form))
         session = db_session.create_session()
         ok = 0
         for s in session.query(sessions.Session).all():
             print(s.hashed)
             if (
-                s.hashed == request.form["session"]
+                s.hashed == request.form["hashed"]
                 and s.name == request.form["user"].lower()
             ):
                 ok = 1
                 break
+            if (
+                s.hashed != request.form["hashed"]
+                and s.name == request.form["user"].lower()
+            ):
+                session.delete(s)
+            session.commit()
         if ok:
             session = db_session.create_session()
             session.query(users.User).filter_by(
@@ -173,7 +177,7 @@ def game():
         session.add(sess)
         session.commit()
 
-        user_d = {'name': now_user, 'hashed': hashed}
+        user_d = {'user': now_user, 'hashed': hashed}
         return render_template(
             "game.html",
             style=url_for("static", filename="css/game.css"),
