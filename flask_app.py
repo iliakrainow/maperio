@@ -49,6 +49,9 @@ def index():
                 bytes(request.form["hashed_password"], "utf-8")
             ).hexdigest() == str(d[str(nick)]):
                 now_user = nick
+                session = db_session.create_session()
+                session.query(sessions.Session).filter_by(name=nick).delete()
+                session.commit()
                 return render_template(
                     "index.html",
                     style=url_for("static", filename="css/main.css"),
@@ -97,12 +100,7 @@ def score():
             ):
                 ok = 1
                 break
-            if (
-                s.hashed != request.form["hashed"]
-                and s.name == request.form["user"].lower()
-            ):
-                session.delete(s)
-            session.commit()
+
         if ok:
             session = db_session.create_session()
             session.query(users.User).filter_by(
