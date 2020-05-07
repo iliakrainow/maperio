@@ -1,23 +1,44 @@
-import telebot
-
-bot = telebot.TeleBot('1242649621:AAH0aGPCowr8TVQ2F-zizFJn3JZK0qLkd5Y')
-
-
-@bot.message_handler(commands=['start'])
-def start_message(message):
-    bot.send_message(message.chat.id, 'Привет, ты написал мне /start')
+# Импортируем необходимые классы.
+from telegram.ext import Updater, MessageHandler, Filters
+from telegram.ext import CallbackContext, CommandHandler
 
 
-@bot.message_handler(content_types=['text'])
-def send_text(message):
-    if message.text == 'Привет':
-        bot.send_message(message.chat.id, 'Привет, мой создатель')
-    elif message.text == 'Пока':
-        bot.send_message(message.chat.id, 'Прощай, создатель')
+# Определяем функцию-обработчик сообщений.
+# У неё два параметра, сам бот и класс updater, принявший сообщение.
+def echo(update, context):
+    # У объекта класса Updater есть поле message, 
+    # являющееся объектом сообщения.
+    # У message есть поле text, содержащее текст полученного сообщения,
+    # а также метод reply_text(str), 
+    # отсылающий ответ пользователю, от которого получено сообщение.
+    update.message.reply_text(update.message.text)
 
-@bot.message_handler(content_types=['sticker'])
-def send_text(message):
-    print(message)
+
+def main():
+    # Создаём объект updater. 
+    # Вместо слова "TOKEN" надо разместить полученный от @BotFather токен
+    updater = Updater('1242649621:AAH0aGPCowr8TVQ2F-zizFJn3JZK0qLkd5Y', use_context=True)
+
+    # Получаем из него диспетчер сообщений.
+    dp = updater.dispatcher
+
+    # Создаём обработчик сообщений типа Filters.text 
+    # из описанной выше функции echo()
+    # После регистрации обработчика в диспетчере
+    # эта функция будет вызываться при получении сообщения 
+    # с типом "текст", т. е. текстовых сообщений.
+    text_handler = MessageHandler(Filters.text, echo)
+
+    # Регистрируем обработчик в диспетчере.
+    dp.add_handler(text_handler)
+    # Запускаем цикл приема и обработки сообщений.
+    updater.start_polling()
+
+    # Ждём завершения приложения. 
+    # (например, получения сигнала SIG_TERM при нажатии клавиш Ctrl+C)
+    updater.idle()
 
 
-bot.polling(none_stop=True, timeout=123)
+# Запускаем функцию main() в случае запуска скрипта.
+if __name__ == '__main__':
+    main()
