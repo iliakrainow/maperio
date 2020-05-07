@@ -52,6 +52,16 @@ window.onload = function () {
 			scene.add(window['target'+i]);
 		}
 	}
+	document.querySelector("#start").addEventListener("click", Handler);
+	function Handler(event) {
+	    fetch('/api')
+	        .then((response) => {
+	            return response.json();
+	        })
+	        .then((myjson) => {
+	            console.log(myjson);
+	        });
+	}
 	function random_position(target){
 		target.x = randomInteger(-400, 400);
 		target.z = randomInteger(-400, 400);
@@ -166,7 +176,20 @@ window.onload = function () {
 	}
 	function end(){
 		renderer.clear();
-		window.location.replace("./finish.html");
-	}
+		var dd = {'speed': k,
+		'score':score};
+		$.ajax({
+		    type: "POST",
+		    url: "{{ url_for("get_post_json") }}",
+		    contentType: "application/json",
+		    data: JSON.stringify(dd),
+		    dataType: "json",
+		    success: function(response) {
+		        window.location.replace("/");
+		    },
+		    error: function(err) {
+		        window.location.replace("/");
+		    }
+		});
 	loop();
 }
