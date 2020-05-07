@@ -103,9 +103,10 @@ def score():
 
         if ok:
             session = db_session.create_session()
-            session.query(users.User).filter_by(
-                name=request.form["user"].lower()
-            ).update({"score": int(request.form["score"])})
+            a = session.query(users.User).filter_by(
+                name=request.form["user"].lower())
+            if a[0].score < int(request.form["score"]):
+                a.update({"score": int(request.form["score"])})
             session.commit()
             return "ok"
         else:

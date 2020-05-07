@@ -14,7 +14,9 @@
 <body>
 	<canvas id="canvas"></canvas>
     <script>
-var user_inf
+var user_inf;
+var stopper;
+stopper = 0;
 window.onload = function () {
 	function randomInteger(min, max) {
   		let rand = min + Math.random() * (max + 1 - min);
@@ -133,6 +135,9 @@ window.onload = function () {
 	        });
 	})
 	function loop() {
+        if (stopper == 1){
+            return False;
+        }
 		updatePlayer()
 		if (Math.abs(player.position.x) > 480 || player.position.z > 500 || player.position.z < -515) {
 			end();
@@ -197,6 +202,7 @@ window.onload = function () {
 	    }
 	}
 	function end(){
+        stopper = 1;
 		renderer.clear();
 		//отправляет результаты
 		var dd = {'score': score};
