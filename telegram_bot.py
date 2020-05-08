@@ -52,10 +52,20 @@ def main():
 
     def help(update, context):
         update.message.reply_text(
-            "Комманды: /help, /phone, /site")
+            "Комманды: /help, /phone, /site, /rules, /info, /news")
 
     def phone(update, context):
         update.message.reply_text("Телефон: Не дам")
+
+    def rules(update, context):
+        update.message.reply_text("Игори какие игори")
+
+    def info(update, context):
+        update.message.reply_text("Леха - бот, Илья - сайт, Иван - хакер")
+
+    def news(update, context):
+        f1 = open('news.txt', 'r')
+        update.message.reply_text(f'Последняя новость: {f1.read()}')
 
     def site(update, context):
         update.message.reply_text(
@@ -64,6 +74,9 @@ def main():
     dp.add_handler(CommandHandler("site", site))
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(CommandHandler("help", help))
+    dp.add_handler(CommandHandler("rules", rules))
+    dp.add_handler(CommandHandler("info", info))
+    dp.add_handler(CommandHandler("news", news))
     text_handler = MessageHandler(Filters.text, echo)
     dp.add_handler(text_handler)
     updater.start_polling()

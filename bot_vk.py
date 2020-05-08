@@ -1,14 +1,58 @@
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 import vk_api
 from vk_api.utils import get_random_id
-import datetime
-import random
+import random, json
 
 users_data = {}
 
+def button(label, color):
+    return {"action": {
+                    "type": "text",
+                    "payload": "{\"button\": \"2\"}",
+                    "label": label
+                },
+                "color": color
+            }
+keyboard = {
+    "one_time": False,
+    "buttons": [
+        [{
+                "action": {
+                    "type": "text",
+                    "payload": "{\"button\": \"1\"}",
+                    "label": "1"
+                },
+            },
+            {
+                "action": {
+                    "type": "text",
+                    "payload": "{\"button\": \"2\"}",
+                    "label": "2"
+                },
+            },
+            {
+                "action": {
+                    "type": "text",
+                    "payload": "{\"button\": \"2\"}",
+                    "label": "3"
+                },
+            },
+            {
+                "action": {
+                    "type": "text",
+                    "payload": "{\"button\": \"2\"}",
+                    "label": "4"
+                },
+            }
+        ]
+    ]
+}
+
+keyboard = json.dumps(keyboard, ensure_ascii=False).encode('utf-8')
+keyboard = str(keyboard.decode('utf-8'))
 
 def main():
-    news = 'Я живоооооооооооооооооооооооооооооооооооооооооооой, Хотя ты это наверняка знаешь........... мдаа'
+    print('Как скажите')
     rules = f'{random.choice(["Куда встал? Сиди пиши правила", "Ладно сидим и пишем это гов...", "А игру кто-нибудь деелает?"])}'
     gruop_id = 194651076
     vk_session = vk_api.VkApi(
@@ -20,7 +64,7 @@ def main():
             msg = event.message
             uid = msg.from_id
             user = vk.users.get(user_ids=uid, fields=['city'])[0]
-            if msg['text'] not in ['1', '2', '3', '4', '5']:
+            if msg['text'] not in ['1', '2', '3', '4']:
                 vk.messages.send(user_id=uid,
                                  message=f'Привет, {user["first_name"]} {user["last_name"]}',
                                  random_id=get_random_id())
@@ -32,6 +76,10 @@ def main():
                                  random_id=get_random_id())
                 vk.messages.send(user_id=uid,
                                  message=f'Вот список команд',
+                                 random_id=get_random_id(),
+                                 keyboard=keyboard)
+                vk.messages.send(user_id=uid,
+                                 message=f'Вот список команд',
                                  random_id=get_random_id())
                 vk.messages.send(user_id=uid,
                                  message=f'1 - Список команд',
@@ -40,13 +88,10 @@ def main():
                                  message=f'2 - Правила игры',
                                  random_id=get_random_id())
                 vk.messages.send(user_id=uid,
-                                 message=f'3 - Последняя новость',
+                                 message=f'3 - Инффа о разрабах',
                                  random_id=get_random_id())
                 vk.messages.send(user_id=uid,
-                                 message=f'4 - Инффа о разрабах',
-                                 random_id=get_random_id())
-                vk.messages.send(user_id=uid,
-                                 message=f'5 - твой id',
+                                 message=f'4 - Последняя новость',
                                  random_id=get_random_id())
             elif msg['text'] == '1':
                 vk.messages.send(user_id=uid,
@@ -59,13 +104,10 @@ def main():
                                  message=f'2 - Правила игры',
                                  random_id=get_random_id())
                 vk.messages.send(user_id=uid,
-                                 message=f'3 - Последняя новость',
+                                 message=f'3 - Инффа о разрабах',
                                  random_id=get_random_id())
                 vk.messages.send(user_id=uid,
-                                 message=f'4 - Инффа о разрабах',
-                                 random_id=get_random_id())
-                vk.messages.send(user_id=uid,
-                                 message=f'5 - твой id',
+                                 message=f'4 - Последняя новость',
                                  random_id=get_random_id())
             elif msg['text'] == '2':
                 vk.messages.send(user_id=uid,
@@ -79,23 +121,25 @@ def main():
                                  random_id=get_random_id())
             elif msg['text'] == '3':
                 vk.messages.send(user_id=uid,
-                                 message=news,
-                                 random_id=get_random_id())
-            elif msg['text'] == '4':
-                vk.messages.send(user_id=uid,
                                  message=f'Ну там есть Илья, Иван и Леха',
                                  random_id=get_random_id())
-            elif msg['text'] == '5':
+            elif msg['text'] == '4':
+                f1 = open('news.txt', 'r')
                 vk.messages.send(user_id=uid,
-                                 message=f'{msg["peer_id"]}',
+                                 message=f'{f1.read()}',
                                  random_id=get_random_id())
+                f1.close()
 
 def u():
     command = int(input('Здравствуй мой повелитель что вы хотите сделать. 1 - Опубликовать пост в группе,'
                     ' или 2 - дать мне нормально работать?'))
     if command == 1:
+        print('Как скажите, хи-хи')
         news = input('Новость:')
-        vk_session2 = vk_api.VkApi(input('Логин '), input('Пароль: '))
+        f = open('news.txt', 'w')
+        f.write(news)
+        f.close()
+        vk_session2 = vk_api.VkApi(input('Логин: '), input('Пароль: '))
         vk_session2.auth()
         vk2 = vk_session2.get_api()
         print(vk2.wall.post(message=news,
