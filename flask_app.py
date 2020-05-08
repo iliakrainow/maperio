@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, jsonify
+from flask import Flask, render_template, request, url_for, jsonify, make_response
 from data import db_session, add_user_api, users, sessions
 import json
 import hashlib
@@ -142,7 +142,6 @@ def give():
             return "Неправильный код."
         else:
             session = db_session.create_session()
-            session = db_session.create_session()
             a = session.query(users.User).filter_by(name=request.form["nick"].lower())
             now = a[0].money
             if now == None:
@@ -163,7 +162,11 @@ def store():
 def game():
     global now_user
     global user_d
-    if now_user != '':
+    if request.cookies.get('user') != None:
+        now_user = request.cookies.get('user')
+    sess = db_session.create_session()
+    a = list(sess.query(sessions.Session).filter_by(name=now_user.lower()))
+    if now_user != '' or (len(a) > 0 and request.cookies.get('sess') == a[0].hashed):
         now = time.time()
         hashed = hashlib.md5(bytes(str(now) + now_user, "utf-8")).hexdigest()
 
@@ -177,13 +180,16 @@ def game():
         session.commit()
 
         user_d = {'user': now_user, 'hashed': hashed}
-        return render_template(
+        res = make_response(render_template(
             "game.html",
             style=url_for("static", filename="css/game.css"),
             first_script=url_for("static", filename="/js/lib/vox.min.js"),
             second_script=url_for("static", filename="/js/lib/three.min.js"),
             third_script=url_for("static", filename="/js/lib/OrbitControls.js"),
-        )
+        ))
+        res.set_cookie('session', hashed)
+        res.set_cookie('user', now_user)
+        return res
     else:
         return 'Сначала нужно войти или зарегестрироваться.'
 
