@@ -13,7 +13,7 @@ app.config["SECRET_KEY"] = "yandexlyceum_secret_key"
 def main():
     db_session.global_init("db/data.sqlite")
     app.register_blueprint(add_user_api.blueprint)
-    app.run()
+    app.run(host='0.0.0.0')
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -38,10 +38,8 @@ def index():
             session.commit()
             now_user = request.form["user"]
             return render_template(
-                "index.html",
-                style=url_for("static", filename="css/main.css"),
-                text_in_login="OK",
-            )
+                "registred.html",
+                style=url_for("static", filename="css/main.css"))
         else:
             nick = request.form["user"]
             d = dict(json.loads(add_user_api.get_users(nick)))
@@ -53,10 +51,8 @@ def index():
                 session.query(sessions.Session).filter_by(name=nick).delete()
                 session.commit()
                 return render_template(
-                    "index.html",
-                    style=url_for("static", filename="css/main.css"),
-                    text_in_login="Успешно!",
-                )
+                    "registred.html",
+                    style=url_for("static", filename="css/main.css"))
             else:
                 return render_template(
                     "index.html",
@@ -64,6 +60,13 @@ def index():
                     text_in_login="Логин занят, пароль неверный",
                 )
 
+@app.route("/registred", methods=["GET", "POST"])
+def registred():
+    global now_user
+    now_user = ''
+    return render_template(
+                "registred.html",
+                style=url_for("static", filename="css/main.css"))
 
 @app.route("/user_data")
 def user_data():
