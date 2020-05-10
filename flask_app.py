@@ -4,6 +4,7 @@ import json
 import hashlib
 import requests
 import time
+from random import randint
 
 
 app = Flask(__name__)
@@ -197,5 +198,6 @@ def game():
         return 'Сначала нужно войти или зарегестрироваться.'
 
 
+may = []
 if __name__ == "__main__":
     main()
