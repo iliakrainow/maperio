@@ -26,8 +26,8 @@ def index():
             "index.html", style=url_for("static", filename="css/main.css")
         )
     elif request.method == "POST":
-        print(add_user_api.get_users(request.form["user"]))
-        if add_user_api.get_users(request.form["user"]) == "{}":
+        print(add_user_api.get_users(request.form["user"].lower()))
+        if add_user_api.get_users(request.form["user"].lower()) == "{}":
             user = users.User()
             user.name = request.form["user"].lower()
             user.hashed_password = hashlib.md5(
@@ -42,7 +42,7 @@ def index():
                 "registred.html",
                 style=url_for("static", filename="css/main.css"))
         else:
-            nick = request.form["user"]
+            nick = request.form["user"].lower()
             d = dict(json.loads(add_user_api.get_users(nick)))
             if hashlib.md5(
                 bytes(request.form["hashed_password"], "utf-8")
@@ -96,10 +96,8 @@ def score():
         session = db_session.create_session()
         ok = 0
         for s in session.query(sessions.Session).all():
-            if (
-                s.hashed == request.form["hashed"]
-                and s.name == request.form["user"].lower()
-            ):
+            if s.hashed == request.form["hashed"]:
+                print('h')
                 ok = 1
                 break
 
@@ -107,10 +105,12 @@ def score():
             session = db_session.create_session()
             a = session.query(users.User).filter_by(
                 name=request.form["user"].lower())
-            if a[0].score < int(request.form["score"]):
+            print(a[0].score)
+            print(int(request.form["score"]), a[0].score)
+            if a[0].score < int(request.form["score"]) or a[0].score == 'NULL':
+                print('f')
                 a.update({"score": int(request.form["score"])})
             session.commit()
-            print('f')
             return "ok"
         else:
             return "False session id"
