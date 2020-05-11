@@ -93,11 +93,9 @@ def score():
             sb2=sorted(sb, reverse=True)[:32],
         )
     elif request.method == "POST":
-        print(list(request.form))
         session = db_session.create_session()
         ok = 0
         for s in session.query(sessions.Session).all():
-            print(s.hashed)
             if (
                 s.hashed == request.form["hashed"]
                 and s.name == request.form["user"].lower()
@@ -112,6 +110,7 @@ def score():
             if a[0].score < int(request.form["score"]):
                 a.update({"score": int(request.form["score"])})
             session.commit()
+            print('f')
             return "ok"
         else:
             return "False session id"

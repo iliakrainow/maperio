@@ -201,14 +201,23 @@ window.onload = function () {
 	        player.position.x += 3 + k;
 	    }
 	}
+	function sleep(milliseconds) {
+            const date = Date.now();
+            let currentDate = null;
+            do {
+                currentDate = Date.now();
+            } while (currentDate - date < milliseconds);
+        }
 	function end(){
-        stopper = 1;
+        	stopper = 1;
 		renderer.clear();
 		//отправляет результаты
 		var dd = {'score': score};
-        $.extend(true, dd, user_inf);
+        	$.extend(true, dd, user_inf);
 		$.post("score", dd );
-        window.location.replace("/registred");
+		sleep(2000);
+        	window.location.replace("/registred");
+
 
 
 	}
