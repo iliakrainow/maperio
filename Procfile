@@ -1,1 +1,2 @@
-web: python bot_vkh.py
+  
+worker: python bot_vkh.py
