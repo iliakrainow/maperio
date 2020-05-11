@@ -1,4 +1,7 @@
 # Импортируем необходимые классы.
+from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
+import vk_api
+from vk_api.utils import get_random_id
 from telegram.ext import Updater, MessageHandler, Filters
 from telegram.ext import CallbackContext, CommandHandler
 from telegram import ReplyKeyboardMarkup
@@ -39,16 +42,18 @@ Technical Information:
 
 def main():
     REQUEST_KWARGS = {
-        'proxy_url': 'socks5://148.251.234.93:1080'}
+        'proxy_url': 'socks5://104.248.63.18:30588'}
 
     updater = Updater('1242649621:AAH0aGPCowr8TVQ2F-zizFJn3JZK0qLkd5Y', use_context=True,
                       request_kwargs=REQUEST_KWARGS)
-
+    vk_session2 = vk_api.VkApi('+79649932510', 'PolkaSpolki2')
+    vk_session2.auth()
+    vk2 = vk_session2.get_api()
     dp = updater.dispatcher
 
     def start(update, context):
         update.message.reply_text(
-            "Привет! Че надо?")
+            "Привет! Че надо? Комманды: /help, /phone, /site, /rules, /info, /news")
 
     def help(update, context):
         update.message.reply_text(
@@ -58,18 +63,17 @@ def main():
         update.message.reply_text("Телефон: Не дам")
 
     def rules(update, context):
-        update.message.reply_text("Игори какие игори")
+        update.message.reply_text("Игрок передвигает кубиком на экране с помощью WASD – стандартной раскладки для игр. При движении мышью с зажатой кнопкой вращается камера. Для получения очков надо собирать красные кубики, который еще и ускоряют игрока, что усложняет действо сие.")
 
     def info(update, context):
         update.message.reply_text("Леха - бот, Илья - сайт, Иван - хакер")
 
     def news(update, context):
-        f1 = open('news.txt', 'r')
-        update.message.reply_text(f'Последняя новость: {f1.read()}')
+        update.message.reply_text(f"Последняя новость: {vk2.wall.get(owner_id='-194651076', count='2')['items'][1]['text']}")
 
     def site(update, context):
         update.message.reply_text(
-            "Сайт: Нема")
+            "Сайт: http://d977c580.ngrok.io/store")
     dp.add_handler(CommandHandler("phone", phone))
     dp.add_handler(CommandHandler("site", site))
     dp.add_handler(CommandHandler("start", start))
